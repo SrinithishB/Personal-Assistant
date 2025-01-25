@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.Theme.PersonalAssistant" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+<!--        <item name="android:windowSplashScreenIconBackgroundColor">@color/material_dynamic_primary0</item>-->
+<!--        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_launcher_foreground</item>-->
+    </style>
+</resources>
