@@ -6,6 +6,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
+<!--        <item name="android:windowSplashScreenAnimatedIcon">@anim/side_slide</item>-->
 <!--        <item name="android:windowSplashScreenIconBackgroundColor">@color/material_dynamic_primary0</item>-->
 <!--        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_launcher_foreground</item>-->
     </style>

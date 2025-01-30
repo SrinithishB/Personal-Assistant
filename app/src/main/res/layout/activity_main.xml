@@ -10,6 +10,7 @@
 
 
     <GridLayout
+        android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:columnCount="2"
@@ -49,6 +50,7 @@
 
         <!-- CardView inside GridLayout (2nd Column) -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/physicalActivityCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnSpan="1"
@@ -63,10 +65,14 @@
                 android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:contentDescription="@string/physical_activities"
+                    android:src="@drawable/walk"/>
                 <TextView
-                    android:id="@+id/card_text2"
-                    android:text="Card 2"
+                    android:id="@+id/steps"
+                    android:text="@string/physical_activities"
                     android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

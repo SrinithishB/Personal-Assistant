@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Personal Assistant</string>
     <string name="calculator">Calculator</string>
+    <string name="physical_activities">Physical Activities</string>
 </resources>

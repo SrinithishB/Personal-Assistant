@@ -2,6 +2,9 @@ package com.example.personalassistant;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.GridLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +14,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-CardView calculator;
+CardView calculator,physical;
+GridLayout gridLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +27,17 @@ CardView calculator;
             return insets;
         });
         calculator=findViewById(R.id.calculator_card);
+        physical=findViewById(R.id.physicalActivityCard);
+        gridLayout=findViewById(R.id.gridLayout);
+        Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.side_slide);
+        gridLayout.startAnimation(animation);
         calculator.setOnClickListener(v -> {
+
             Intent intent=new Intent(this,CalculatorActivity.class);
+            startActivity(intent);
+        });
+        physical.setOnClickListener(v -> {
+            Intent intent=new Intent(this, PhysicalActivity.class);
             startActivity(intent);
         });
     }
