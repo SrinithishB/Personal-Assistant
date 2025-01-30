@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,7 @@ import java.util.Stack;
 public class CalculatorActivity extends AppCompatActivity {
     Button n1, n2, n3, n4, n5, n6, n7, n8, n9, n0;
     Button btnAdd, btnSub, btnMul, btnDiv, btnDot, btnAC, btnBackspace, btnEqual;
-    EditText editText;
+    TextView editText;
     StringBuilder currentExpression = new StringBuilder();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
