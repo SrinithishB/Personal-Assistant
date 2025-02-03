@@ -3,7 +3,6 @@ package com.example.personalassistant;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -17,8 +16,10 @@ import java.util.Stack;
 public class CalculatorActivity extends AppCompatActivity {
     Button n1, n2, n3, n4, n5, n6, n7, n8, n9, n0;
     Button btnAdd, btnSub, btnMul, btnDiv, btnDot, btnAC, btnBackspace, btnEqual;
+    Button btnOpenBracket, btnCloseBracket; // Added bracket buttons
     TextView editText;
     StringBuilder currentExpression = new StringBuilder();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,16 +52,12 @@ public class CalculatorActivity extends AppCompatActivity {
         btnAC = findViewById(R.id.btnAC);
         btnBackspace = findViewById(R.id.btnBack);
         btnEqual = findViewById(R.id.btnEqual);
+        btnOpenBracket = findViewById(R.id.btnOpenBracket);
+        btnCloseBracket = findViewById(R.id.btnCloseBracket);
 
-        editText=findViewById(R.id.edit_text);
-        // Attach onClickListeners to buttons
-        View.OnClickListener numberClickListener = v -> {
-            Button button = (Button) v;
-            String currentText = editText.getText().toString();
-            editText.setText(currentText + button.getText().toString());
-        };
+        editText = findViewById(R.id.edit_text);
 
-        // Append numbers to the expression
+        // Number buttons
         n1.setOnClickListener(v -> appendToExpression("1"));
         n2.setOnClickListener(v -> appendToExpression("2"));
         n3.setOnClickListener(v -> appendToExpression("3"));
@@ -72,20 +69,24 @@ public class CalculatorActivity extends AppCompatActivity {
         n9.setOnClickListener(v -> appendToExpression("9"));
         n0.setOnClickListener(v -> appendToExpression("0"));
 
-        // Append operators to the expression
+        // Operator buttons
         btnAdd.setOnClickListener(v -> appendToExpression("+"));
         btnSub.setOnClickListener(v -> appendToExpression("-"));
         btnMul.setOnClickListener(v -> appendToExpression("*"));
         btnDiv.setOnClickListener(v -> appendToExpression("/"));
         btnDot.setOnClickListener(v -> appendToExpression("."));
 
-        // Clear the expression
+        // Bracket buttons
+        btnOpenBracket.setOnClickListener(v -> appendToExpression("("));
+        btnCloseBracket.setOnClickListener(v -> appendToExpression(")"));
+
+        // Clear button
         btnAC.setOnClickListener(v -> {
             currentExpression.setLength(0);
             editText.setText("");
         });
 
-        // Backspace functionality
+        // Backspace button
         btnBackspace.setOnClickListener(v -> {
             if (currentExpression.length() > 0) {
                 currentExpression.deleteCharAt(currentExpression.length() - 1);
@@ -93,30 +94,27 @@ public class CalculatorActivity extends AppCompatActivity {
             }
         });
 
-        // Evaluate the expression
+        // Equals button
         btnEqual.setOnClickListener(v -> evaluateExpression());
     }
 
-    // Append input to the expression and update the EditText
     private void appendToExpression(String value) {
         currentExpression.append(value);
         editText.setText(currentExpression.toString());
     }
 
-    // Evaluate the expression using a basic script engine
     private void evaluateExpression() {
         try {
             String expression = currentExpression.toString();
             double result = calculate(expression);
             editText.setText(String.valueOf(result));
-            currentExpression.setLength(0); // Reset the expression
-            currentExpression.append(result); // Allow chaining calculations
+            currentExpression.setLength(0);
+            currentExpression.append(result);
         } catch (Exception e) {
             editText.setText("Error");
         }
     }
 
-    // Function to calculate the result of a mathematical expression
     private double calculate(String expression) {
         Stack<Double> numbers = new Stack<>();
         Stack<Character> operators = new Stack<>();
@@ -135,7 +133,14 @@ public class CalculatorActivity extends AppCompatActivity {
                 continue;
             }
 
-            if (c == '+' || c == '-' || c == '*' || c == '/') {
+            if (c == '(') {
+                operators.push(c);
+            } else if (c == ')') {
+                while (operators.peek() != '(') {
+                    numbers.push(applyOperator(operators.pop(), numbers.pop(), numbers.pop()));
+                }
+                operators.pop(); // Remove the '(' from stack
+            } else if (c == '+' || c == '-' || c == '*' || c == '/') {
                 while (!operators.isEmpty() && hasPrecedence(c, operators.peek())) {
                     numbers.push(applyOperator(operators.pop(), numbers.pop(), numbers.pop()));
                 }
@@ -151,26 +156,20 @@ public class CalculatorActivity extends AppCompatActivity {
         return numbers.pop();
     }
 
-    // Check operator precedence
     private boolean hasPrecedence(char op1, char op2) {
+        if (op2 == '(' || op2 == ')') return false;
         if ((op1 == '*' || op1 == '/') && (op2 == '+' || op2 == '-')) return false;
         return true;
     }
 
-    // Apply an operator to two numbers
     private double applyOperator(char op, double b, double a) {
         switch (op) {
-            case '+':
-                return a + b;
-            case '-':
-                return a - b;
-            case '*':
-                return a * b;
-            case '/':
-                if (b == 0) throw new ArithmeticException("Division by zero");
+            case '+': return a + b;
+            case '-': return a - b;
+            case '*': return a * b;
+            case '/': if (b == 0) throw new ArithmeticException("Division by zero");
                 return a / b;
         }
         return 0;
     }
-
 }

@@ -34,11 +34,31 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnOpenBracket"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:text="("
+                android:background="@drawable/custom_button"
+                android:textColor="@color/black" />
+            <Button
+                android:id="@+id/btnCloseBracket"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:text=")"
+                android:background="@drawable/custom_button"
+                android:textColor="@color/black" />
+            <Button
                 android:id="@+id/btnAC"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="64dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:layout_margin="5dp"
                 android:text="AC"
                 android:background="@drawable/custom_button"
@@ -49,7 +69,7 @@
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="64dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:text="⌫"
                 android:layout_margin="5dp"
                 android:background="@drawable/custom_button"
