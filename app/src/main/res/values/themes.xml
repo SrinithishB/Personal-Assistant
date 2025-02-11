@@ -3,6 +3,7 @@
     <style name="Base.Theme.PersonalAssistant" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="fontFamily">sans-serif</item>
     </style>
 
     <style name="Theme.PersonalAssistant" parent="Base.Theme.PersonalAssistant" />

@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="orange">#FF5722</color>
+    <color name="yellow">#FFD700</color> <!-- Golden Yellow -->
+    <color name="red">#FF4500</color> <!-- Deep Orange-Red -->
+    <color name="gray">#D3D3D3</color> <!-- Light Gray for background -->
+    <color name="primary">@color/material_dynamic_primary40</color>
+    <color name="primaryContainer">@color/material_dynamic_primary90</color>
+    <color name="onPrimary">@color/material_dynamic_primary100</color>
+    <color name="onPrimaryContainer">@color/material_dynamic_primary10</color>
+
+
 </resources>
