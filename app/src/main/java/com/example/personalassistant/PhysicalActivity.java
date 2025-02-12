@@ -1,17 +1,26 @@
 package com.example.personalassistant;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -38,6 +48,7 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
     private static final float CALORIES_PER_STEP = 0.04f;
     private static final float STEP_LENGTH = 0.78f;
     private static final float STEP_TIME_SECONDS = 0.5f;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +63,24 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         changeGoalBtn = findViewById(R.id.changeGoalBtn);
         goalText=findViewById(R.id.goalText);
         progressBar=findViewById(R.id.progress_bar);
+        linearLayout=findViewById(R.id.linearLayout);
+        Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bottom_top_slide);
+        linearLayout.startAnimation(animation);
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         // Request permission if not granted
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACTIVITY_RECOGNITION}, SENSOR_PERMISSION_CODE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, SENSOR_PERMISSION_CODE);
+            }else{
+                Toast.makeText(this, "Android Version not supported", Toast.LENGTH_SHORT).show();
+            }
         } else {
             loadData();
         }
 
-//        resetSteps();
+        resetSteps();
         resetStepsIfNewDay();
         loadData();
         loadGoal();
@@ -146,6 +165,10 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
             activeTimeText.setText(String.format("%.1f min", activeTimeMinutes));
 
             saveData();
+            if (progress >= 100) {
+                sendGoalReachedNotification();
+            }
+
         }
     }
 
@@ -237,5 +260,29 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         editor.putLong("lastResetTime", currentTime);
         editor.apply();
     }
+    private void sendGoalReachedNotification() {
+        String channelId = "step_goal_channel";
+        String channelName = "Step Goal Notifications";
 
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Intent intent = new Intent(this, PhysicalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.walk)
+                .setContentTitle("Congratulations!")
+                .setContentText("You've reached your step goal of " + stepGoal + " steps!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        notificationManager.notify(1, builder.build());
+    }
 }

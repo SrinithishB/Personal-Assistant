@@ -44,4 +44,6 @@ dependencies {
     androidTestImplementation libs.espresso.core
 
     implementation "androidx.core:core-splashscreen:1.0.1"
+    implementation 'com.google.firebase:firebase-messaging:23.2.0'
+
 }
