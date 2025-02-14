@@ -8,229 +8,257 @@
     android:orientation="vertical"
     android:background="@drawable/gradient_background"
     tools:context=".MainActivity">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/app_name"
-    android:textAlignment="center"
-    android:textColor="@color/white"
-    android:textSize="25sp"
-    android:layout_marginTop="100dp"
-    android:layout_marginBottom="100dp"/>
-    <GridLayout
-        android:id="@+id/gridLayout"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="2"
-        android:padding="16dp"
-        android:background="@drawable/background">
+        android:layout_height="match_parent">
 
-        <!-- CardView inside GridLayout (1st Column) -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/calculator_card"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_margin="8dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="100dp"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <GridLayout
+                android:id="@+id/gridLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:contentDescription="@string/calculator"
-                    android:src="@drawable/calculator"/>
-                <TextView
-                    android:id="@+id/card_text1"
-                    android:text="@string/calculator"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                android:background="@drawable/background"
+                android:columnCount="2"
+                android:padding="16dp">
 
-        <!-- CardView inside GridLayout (2nd Column) -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/physicalActivityCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_margin="8dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+                <!-- CardView inside GridLayout (1st Column) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/calculator_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowSpan="1"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:contentDescription="@string/physical_activities"
-                    android:src="@drawable/walk"/>
-                <TextView
-                    android:id="@+id/steps"
-                    android:text="@string/physical_activities"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/todoCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_margin="8dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:contentDescription="@string/todo"
-                    android:src="@drawable/todo"/>
-                <TextView
-                    android:id="@+id/todo"
-                    android:text="@string/todo"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/notesCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_margin="8dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="@string/calculator"
+                            android:src="@drawable/calculator" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:contentDescription="@string/notes"
-                    android:src="@drawable/notes"/>
-                <TextView
-                    android:id="@+id/Notes"
-                    android:text="@string/notes"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                        <TextView
+                            android:id="@+id/card_text1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/calculator"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/gpsCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_margin="8dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+                <!-- CardView inside GridLayout (2nd Column) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/physicalActivityCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowSpan="1"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:contentDescription="@string/gps"
-                    android:src="@drawable/gpsicon"/>
-                <TextView
-                    android:id="@+id/GPS"
-                    android:text="@string/gps"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/documentsCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:layout_rowSpan="1"
-            android:layout_margin="8dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp"
-            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="@string/physical_activities"
+                            android:src="@drawable/walk" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:contentDescription="@string/docs"
-                    android:src="@drawable/documents_icon"/>
-                <TextView
-                    android:id="@+id/Docs"
-                    android:text="@string/docs"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                        <TextView
+                            android:id="@+id/steps"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/physical_activities"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-    </GridLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/todoCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowSpan="1"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="@string/todo"
+                            android:src="@drawable/todo" />
+
+                        <TextView
+                            android:id="@+id/todo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/todo"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/notesCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowSpan="1"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="@string/notes"
+                            android:src="@drawable/notes" />
+
+                        <TextView
+                            android:id="@+id/Notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/notes"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/gpsCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowSpan="1"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="@string/gps"
+                            android:src="@drawable/gpsicon" />
+
+                        <TextView
+                            android:id="@+id/GPS"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/gps"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/documentsCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowSpan="1"
+                    android:layout_columnSpan="1"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="@string/docs"
+                            android:src="@drawable/documents_icon" />
+
+                        <TextView
+                            android:id="@+id/Docs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/docs"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>
