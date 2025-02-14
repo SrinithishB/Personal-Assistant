@@ -128,6 +128,107 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/notesCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1"
+            android:layout_margin="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:contentDescription="@string/notes"
+                    android:src="@drawable/notes"/>
+                <TextView
+                    android:id="@+id/Notes"
+                    android:text="@string/notes"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/gpsCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1"
+            android:layout_margin="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:contentDescription="@string/gps"
+                    android:src="@drawable/gpsicon"/>
+                <TextView
+                    android:id="@+id/GPS"
+                    android:text="@string/gps"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/documentsCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1"
+            android:layout_margin="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="8dp"
+            android:layout_columnWeight="1">  <!-- Take equal space in 2 columns -->
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:contentDescription="@string/docs"
+                    android:src="@drawable/documents_icon"/>
+                <TextView
+                    android:id="@+id/Docs"
+                    android:text="@string/docs"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </GridLayout>
 
