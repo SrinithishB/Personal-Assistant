@@ -36,7 +36,6 @@
                 android:columnCount="2"
                 android:padding="16dp">
 
-                <!-- CardView inside GridLayout (1st Column) -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/calculator_card"
                     android:layout_width="0dp"
@@ -46,8 +45,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
-
+                    app:cardElevation="4dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -74,7 +72,6 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- CardView inside GridLayout (2nd Column) -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/physicalActivityCard"
                     android:layout_width="0dp"
@@ -84,7 +81,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+                    app:cardElevation="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -120,7 +117,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+                    app:cardElevation="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -156,7 +153,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+                    app:cardElevation="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -192,7 +189,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+                    app:cardElevation="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -228,7 +225,7 @@
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">  <!-- Take equal space in 2 columns -->
+                    app:cardElevation="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-CardView calculator,physical,todo;
+CardView calculator,physical,todo,gps;
 GridLayout gridLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,11 @@ GridLayout gridLayout;
         calculator=findViewById(R.id.calculator_card);
         physical=findViewById(R.id.physicalActivityCard);
         gridLayout=findViewById(R.id.gridLayout);
+        gps=findViewById(R.id.gpsCard);
         todo=findViewById(R.id.todoCard);
         Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bottom_top_slide);
         gridLayout.startAnimation(animation);
         calculator.setOnClickListener(v -> {
-
             Intent intent=new Intent(this,CalculatorActivity.class);
             startActivity(intent);
         });
@@ -43,6 +43,10 @@ GridLayout gridLayout;
         });
         todo.setOnClickListener(v -> {
             Intent intent=new Intent(this, TodoActivity.class);
+            startActivity(intent);
+        });
+        gps.setOnClickListener(v -> {
+            Intent intent =new Intent(this, MapsActivity.class);
             startActivity(intent);
         });
     }

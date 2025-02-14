@@ -10,4 +10,6 @@
     <string name="notes">Notes</string>
     <string name="gps">GPS</string>
     <string name="docs">Docs</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="map_api_key">YOUR_API_KEY</string>
 </resources>
