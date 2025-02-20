@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -30,8 +30,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class PhysicalActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -41,51 +48,89 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
     private float totalSteps = 0f;
     private float previousTotalSteps = 0f;
     private int stepGoal = 10000; // Default step goal
-    private TextView tvStepsTaken, tvCaloriesBurned, distanceText, activeTimeText,goalText;
+    private TextView tvStepsTaken, tvCaloriesBurned, distanceText, activeTimeText, goalText;
     private Button changeGoalBtn;
-
     private ProgressBar progressBar;
     private static final float CALORIES_PER_STEP = 0.04f;
-    private static final float STEP_LENGTH = 0.78f;
-    private static final float STEP_TIME_SECONDS = 0.5f;
+    private static final float STEP_LENGTH = 0.78f; // in meters
+    private static final float STEP_TIME_SECONDS = 0.5f; // in seconds
     private LinearLayout linearLayout;
+    private StepCountDBHandler dbHandler;
+    private String currentDate;
+    private String lastRecordedDate;
+    private static final int FOREGROUND_SERVICE_PERMISSION_CODE = 2;
+    RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical);
 
-        // Initialize UI elements
         tvStepsTaken = findViewById(R.id.tv_stepsTaken);
         tvCaloriesBurned = findViewById(R.id.caloriesText);
         distanceText = findViewById(R.id.distanceText);
         activeTimeText = findViewById(R.id.activeTimeText);
         changeGoalBtn = findViewById(R.id.changeGoalBtn);
-        goalText=findViewById(R.id.goalText);
-        progressBar=findViewById(R.id.progress_bar);
-        linearLayout=findViewById(R.id.linearLayout);
-        Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bottom_top_slide);
+        goalText = findViewById(R.id.goalText);
+        progressBar = findViewById(R.id.progress_bar);
+        linearLayout = findViewById(R.id.linearLayout);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_top_slide);
         linearLayout.startAnimation(animation);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        dbHandler = new StepCountDBHandler(this);
+        currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-        // Request permission if not granted
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, SENSOR_PERMISSION_CODE);
-            }else{
+            } else {
                 Toast.makeText(this, "Android Version not supported", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            loadData();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.FOREGROUND_SERVICE}, FOREGROUND_SERVICE_PERMISSION_CODE);
+            }
         }
 
-        resetSteps();
-        resetStepsIfNewDay();
-        loadData();
+        // Start the service if permission is granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
+            startStepCounterService();
+        }
+
+        createNotificationChannel(); // Create notification channel
+        loadDataFromDB();
         loadGoal();
+        resetSteps();
+        loadStepData();
 
         changeGoalBtn.setOnClickListener(view -> showGoalPicker());
+    }
+    private void loadStepData() {
+        List<StepCount> stepList = dbHandler.getAllSteps();
+        StepCountAdapter adapter = new StepCountAdapter(stepList);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void startStepCounterService() {
+        Intent serviceIntent = new Intent(this, StepCounterService.class);
+        startService(serviceIntent);
+    }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "step_goal_channel";
+            String channelName = "Step Goal Notifications";
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void showGoalPicker() {
@@ -121,59 +166,83 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         });
 
         cancel.setOnClickListener(view1 -> bottomSheetDialog.dismiss());
+    }
 
+
+
+    private void loadDataFromDB() {
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        lastRecordedDate = getSharedPreferences("step_data", Context.MODE_PRIVATE).getString("lastRecordedDate", "");
+
+        // Check if the date has changed
+        if (!today.equals(lastRecordedDate)) {
+            // Reset steps for the new day
+            totalSteps = 0; // Reset total steps
+            dbHandler.insertOrUpdateStepCount(today, 0); // Reset in DB
+            SharedPreferences.Editor editor = getSharedPreferences("step_data", Context.MODE_PRIVATE).edit();
+            editor.putString("lastRecordedDate", today);
+            editor.apply();
+        }
+
+        int steps = dbHandler.getStepCount(today);
+        totalSteps += steps; // Add steps from the database to totalSteps
+        tvStepsTaken.setText(String.valueOf(totalSteps));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_GRANTED) {
-            running = true;
-            Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-            if (stepSensor == null) {
-                Toast.makeText(this, "No step sensor detected", Toast.LENGTH_SHORT).show();
-            } else {
-                sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI);
+        running = true;
+        Sensor stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        if (stepSensor == null) {
+            Toast.makeText(this, "No step sensor detected", Toast.LENGTH_SHORT).show();
+        } else {
+            sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
+                startStepCounterService();
             }
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        running = false;
-        sensorManager.unregisterListener(this);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (running) {
-            totalSteps = event.values[0];
-            int currentSteps = (int) (totalSteps - previousTotalSteps);
+        if (running && event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            int currentSteps = (int) event.values[0]; // Step detected (usually 1 per event)
 
-            // Calculate percentage progress
-            int progress = (int) (((float) currentSteps / stepGoal) * 100);
+            String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+            // Retrieve existing steps for today before adding new ones
+            int previousSteps = dbHandler.getStepCount(today);
+            totalSteps = previousSteps + currentSteps; // Ensure steps are added correctly
+
+            // Update UI
+            tvStepsTaken.setText(String.valueOf(totalSteps));
+
+            // Save updated step count in the database
+            dbHandler.insertOrUpdateStepCount(today, (int) totalSteps);
+            Log.d("DB_CHECK", "Steps: " + dbHandler.getAllSteps().toString());
+
+
+            // Calculate progress
+            int progress = (int) (((float) totalSteps / stepGoal) * 100);
             progressBar.setProgress(progress);
 
-            float caloriesBurned = currentSteps * CALORIES_PER_STEP;
-            float distanceCovered = (currentSteps * STEP_LENGTH) / 1000; // km
-            float activeTimeMinutes = (currentSteps * STEP_TIME_SECONDS) / 60; // minutes
+            // Calculate and update stats
+            float caloriesBurned = totalSteps * CALORIES_PER_STEP;
+            float distanceCovered = (totalSteps * STEP_LENGTH) / 1000; // km
+            float activeTimeMinutes = (totalSteps * STEP_TIME_SECONDS) / 60; // minutes
 
-            tvStepsTaken.setText(String.valueOf(currentSteps));
             tvCaloriesBurned.setText(String.format("%.2f kcal", caloriesBurned));
             distanceText.setText(String.format("%.2f km", distanceCovered));
             activeTimeText.setText(String.format("%.1f min", activeTimeMinutes));
 
-            saveData();
+            // Trigger notification if goal is reached
             if (progress >= 100) {
                 sendGoalReachedNotification();
             }
-
         }
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     private void resetSteps() {
         tvStepsTaken.setOnClickListener(v ->
@@ -181,36 +250,33 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         );
 
         tvStepsTaken.setOnLongClickListener(v -> {
-            previousTotalSteps = totalSteps;
+            totalSteps = 0; // Reset total steps
+            String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            dbHandler.insertOrUpdateStepCount(today, 0); // Reset in DB
             tvStepsTaken.setText("0");
             tvCaloriesBurned.setText("0.00 kcal");
             distanceText.setText("0.00 km");
             activeTimeText.setText("0.0 min");
-            saveData();
+            progressBar.setProgress(0); // Reset progress bar
             return true;
         });
     }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
-    private void saveData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("stepCount", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat("previousTotalSteps", previousTotalSteps);
-        editor.apply();
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        running = false;
+        sensorManager.unregisterListener(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
+            Intent serviceIntent = new Intent(this, StepCounterService.class);
+            stopService(serviceIntent);
+        }
+
     }
-
-    private void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("stepCount", Context.MODE_PRIVATE);
-        previousTotalSteps = sharedPreferences.getFloat("previousTotalSteps", 0f);
-
-        int currentSteps = (int) (totalSteps - previousTotalSteps);
-
-        // Restore progress bar
-        int progress = (int) (((float) currentSteps / stepGoal) * 100);
-        progressBar.setProgress(progress);
-
-        tvStepsTaken.setText(String.valueOf(currentSteps));
-    }
-
     private void saveGoal() {
         SharedPreferences sharedPreferences = getSharedPreferences("goal", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -221,55 +287,11 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
     private void loadGoal() {
         SharedPreferences sharedPreferences = getSharedPreferences("goal", Context.MODE_PRIVATE);
         stepGoal = sharedPreferences.getInt("goal", 10000);
-        // Update the goalText view
         goalText.setText(String.format("%d", stepGoal));
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == SENSOR_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                loadData();
-            } else {
-                Toast.makeText(this, "Permission denied! App may not work correctly.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-    private void resetStepsIfNewDay() {
-        SharedPreferences sharedPreferences = getSharedPreferences("stepCount", Context.MODE_PRIVATE);
-        long lastResetTime = sharedPreferences.getLong("lastResetTime", 0);
-        long currentTime = System.currentTimeMillis();
-
-        // Check if it's a new day
-        if (lastResetTime == 0 || isNewDay(lastResetTime, currentTime)) {
-            previousTotalSteps = 0;
-            saveData(); // Reset the step data
-            saveLastResetTime(currentTime); // Save the current date as the last reset time
-        }
-    }
-
-    private boolean isNewDay(long lastResetTime, long currentTime) {
-        // Convert both times to days
-        return currentTime / (1000 * 60 * 60 * 24) != lastResetTime / (1000 * 60 * 60 * 24);
-    }
-
-    private void saveLastResetTime(long currentTime) {
-        SharedPreferences sharedPreferences = getSharedPreferences("stepCount", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong("lastResetTime", currentTime);
-        editor.apply();
-    }
     private void sendGoalReachedNotification() {
         String channelId = "step_goal_channel";
-        String channelName = "Step Goal Notifications";
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-        }
 
         Intent intent = new Intent(this, PhysicalActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -283,6 +305,7 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, builder.build());
     }
 }
