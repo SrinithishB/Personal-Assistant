@@ -79,7 +79,6 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_top_slide);
         linearLayout.startAnimation(animation);
 
@@ -211,6 +210,7 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
 
             String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
+
             // Retrieve existing steps for today before adding new ones
             int previousSteps = dbHandler.getStepCount(today);
             totalSteps = previousSteps + currentSteps; // Ensure steps are added correctly
@@ -271,10 +271,10 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         super.onPause();
         running = false;
         sensorManager.unregisterListener(this);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
-            Intent serviceIntent = new Intent(this, StepCounterService.class);
-            stopService(serviceIntent);
-        }
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED) {
+//            Intent serviceIntent = new Intent(this, StepCounterService.class);
+//            stopService(serviceIntent);
+//        }
 
     }
     private void saveGoal() {
