@@ -41,45 +41,31 @@ public class StepCountDBHandler extends SQLiteOpenHelper {
         // Recreate the table
         onCreate(db);
     }
-    // Method to insert step count data
-    public void insertStepCount(String date, int stepCount) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "INSERT OR REPLACE INTO " + TABLE_NAME + " ("
-                + COLUMN_DATE + ", "
-                + COLUMN_COUNT + ") VALUES ('"
-                + date + "', "
-                + stepCount + ");";
-        db.execSQL(query);
-        db.close();
-    }
-    public void updateStepCount(String date, int stepCount) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + TABLE_NAME + " SET "
-                + COLUMN_COUNT + " = " + stepCount
-                + " WHERE " + COLUMN_DATE + " = '" + date + "';";
-        db.execSQL(query);
-        db.close();
-    }
 
-    // Insert or Update Step Count for a Date
+    // ✅ Insert or Update Step Count for a Date
     public void insertOrUpdateStepCount(String date, int stepCount) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put("STEP_DATE", date);
-        values.put("STEP_COUNT", stepCount);
 
-        db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        values.put(COLUMN_DATE, date.trim()); // Ensure correct format
+        values.put(COLUMN_COUNT, stepCount);
+
+        long result = db.insertWithOnConflict(TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+        if (result == -1) {
+            Log.e("DB_ERROR", "Failed to insert/update step count");
+        } else {
+            Log.d("DB_SUCCESS", "Inserted: " + date + " - " + stepCount);
+        }
 
         db.close();
     }
 
-
-    // Get Step Count for a Date
+    // ✅ Get Step Count for a Specific Date
     public int getStepCount(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT STEP_COUNT FROM " + TABLE_NAME + " WHERE STEP_DATE = '" + date + "';";
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_COUNT + " FROM " + TABLE_NAME + " WHERE " + COLUMN_DATE + " = ?", new String[]{date});
+
         int stepCount = 0;
         if (cursor.moveToFirst()) {
             stepCount = cursor.getInt(0);
@@ -89,18 +75,20 @@ public class StepCountDBHandler extends SQLiteOpenHelper {
         return stepCount;
     }
 
+    // ✅ Get All Step Data (Corrected Indexing)
     public List<StepCount> getAllSteps() {
         List<StepCount> stepList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" ORDER BY "+COLUMN_DATE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_DATE, null);
 
         if (cursor.moveToFirst()) {
             do {
-                StepCount step = new StepCount(
-                        cursor.getString(0),  // Date
-                        cursor.getInt(1)      // Steps
-                );
-                Log.d("DB_DATA", "Date: " + step.getDate() + ", Steps: " + step.getSteps());
+                // ✅ Correct column indexes using getColumnIndex()
+                String date = cursor.getString(cursor.getColumnIndex(COLUMN_DATE));
+                int steps = cursor.getInt(cursor.getColumnIndex(COLUMN_COUNT));
+
+                StepCount step = new StepCount(date, steps);
+                Log.d("DB_DATA", "Date: " + date + ", Steps: " + steps);
                 stepList.add(step);
             } while (cursor.moveToNext());
         }
@@ -108,5 +96,4 @@ public class StepCountDBHandler extends SQLiteOpenHelper {
         db.close();
         return stepList;
     }
-
 }

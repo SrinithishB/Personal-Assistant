@@ -77,7 +77,7 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         linearLayout = findViewById(R.id.linearLayout);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
 
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_top_slide);
         linearLayout.startAnimation(animation);
@@ -219,8 +219,9 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
             tvStepsTaken.setText(String.valueOf(totalSteps));
 
             // Save updated step count in the database
+//            Toast.makeText(this, today, Toast.LENGTH_SHORT).show();
             dbHandler.insertOrUpdateStepCount(today, (int) totalSteps);
-            Log.d("DB_CHECK", "Steps: " + dbHandler.getAllSteps().toString());
+//            Log.d("DB_CHECK", "Steps: " + dbHandler.getAllSteps().toString());
 
 
             // Calculate progress
