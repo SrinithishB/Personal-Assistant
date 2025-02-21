@@ -3,10 +3,10 @@ package com.example.personalassistant;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +15,9 @@ import java.util.Locale;
 
 public class StepCountAdapter extends RecyclerView.Adapter<StepCountAdapter.ViewHolder> {
     private List<StepCount> stepList;
-
+    private static final float CALORIES_PER_STEP = 0.04f;
+    private static final float STEP_LENGTH = 0.78f; // in meters
+    private static final float STEP_TIME_SECONDS = 0.5f; // in seconds
     public StepCountAdapter(List<StepCount> stepList) {
         this.stepList = stepList;
     }
@@ -43,6 +45,14 @@ public class StepCountAdapter extends RecyclerView.Adapter<StepCountAdapter.View
         }
 
         holder.stepsTextView.setText(String.valueOf(step.getSteps()));
+        float caloriesBurned = step.getSteps() * CALORIES_PER_STEP;
+        float distanceCovered = (step.getSteps() * STEP_LENGTH) / 1000; // km
+        float activeTimeMinutes = (step.getSteps() * STEP_TIME_SECONDS) / 60; // minutes
+
+        // Example: Assuming StepCount model has these values
+        holder.caloriesText.setText(String.format("%.2f kcal", caloriesBurned));
+        holder.distanceText.setText(String.format("%.2f km", distanceCovered));
+        holder.activeTimeText.setText(String.format("%.1f min", activeTimeMinutes));
     }
 
     @Override
@@ -51,12 +61,17 @@ public class StepCountAdapter extends RecyclerView.Adapter<StepCountAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView dateTextView, stepsTextView;
+        TextView dateTextView, stepsTextView, caloriesText, distanceText, activeTimeText;
+        ImageView caloriesIcon, distanceIcon, activeTimeIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             stepsTextView = itemView.findViewById(R.id.stepsTextView);
+            caloriesText = itemView.findViewById(R.id.caloriesText);
+            distanceText = itemView.findViewById(R.id.distanceText);
+            activeTimeText = itemView.findViewById(R.id.activeTimeText);
+
         }
     }
 }
