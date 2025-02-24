@@ -12,4 +12,5 @@
     <string name="docs">Docs</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="map_api_key">YOUR_API_KEY</string>
+    <string name="today">Today</string>
 </resources>

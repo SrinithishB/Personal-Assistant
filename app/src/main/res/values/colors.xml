@@ -6,6 +6,8 @@
     <color name="yellow">#FFD700</color> <!-- Golden Yellow -->
     <color name="red">#FF4500</color> <!-- Deep Orange-Red -->
     <color name="gray">#D3D3D3</color> <!-- Light Gray for background -->
+    <color name="cardCircleColor">#3B3849</color>
+    <color name="backgroundColor">#4C4B58</color>
     <color name="primary">@color/material_dynamic_primary40</color>
     <color name="primaryContainer">@color/material_dynamic_primary90</color>
     <color name="onPrimary">@color/material_dynamic_primary100</color>

@@ -114,7 +114,8 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
     }
     private void loadStepData() {
         List<StepCount> stepList = dbHandler.getAllSteps();
-        StepCountAdapter adapter = new StepCountAdapter(stepList);
+        stepList.removeLast();
+        StepCountAdapter adapter = new StepCountAdapter(stepList.reversed());
         recyclerView.setAdapter(adapter);
     }
 
