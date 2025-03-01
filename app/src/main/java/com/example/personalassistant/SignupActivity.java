@@ -42,7 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         signupButton.setOnClickListener(v -> registerUser());
-        loginTextView.setOnClickListener(v -> startActivity(new Intent(SignupActivity.this, MainActivity.class)));
+        loginTextView.setOnClickListener(v -> finish());
 
     }
     private void registerUser() {
