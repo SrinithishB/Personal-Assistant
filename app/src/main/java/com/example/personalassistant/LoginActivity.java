@@ -38,6 +38,9 @@ public class LoginActivity extends AppCompatActivity {
         login=findViewById(R.id.loginBtn);
         signupText=findViewById(R.id.signupLink);
         login.setOnClickListener(view -> loginUser());
+        signupText.setOnClickListener(view -> {
+            startActivity(new Intent(this, SignupActivity.class));
+        });
     }
    private void loginUser(){
        String email = emailText.getText().toString().trim();
