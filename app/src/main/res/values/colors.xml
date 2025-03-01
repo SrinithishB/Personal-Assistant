@@ -12,6 +12,7 @@
     <color name="primaryContainer">@color/material_dynamic_primary90</color>
     <color name="onPrimary">@color/material_dynamic_primary100</color>
     <color name="onPrimaryContainer">@color/material_dynamic_primary10</color>
+    <color name="lightGray">#E0E0E0</color>
 
 
 </resources>
