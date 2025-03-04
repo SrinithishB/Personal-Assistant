@@ -33,5 +33,10 @@
     <string name="back">Back</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="skip">Skip</string>
+    <string name="username">Username</string>
+    <string name="profile">Profile</string>
+    <string name="save">Save</string>
+    <string name="logout">Logout</string>
 
 </resources>

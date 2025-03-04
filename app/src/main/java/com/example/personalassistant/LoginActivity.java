@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
     Button login;
     EditText emailText,passwordText;
-    TextView signupText,forgotPasswordText;
+    TextView signupText,forgotPasswordText,skipText;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +42,14 @@ public class LoginActivity extends AppCompatActivity {
         passwordText=findViewById(R.id.passwordText);
         login=findViewById(R.id.loginBtn);
         signupText=findViewById(R.id.signupLink);
+        skipText=findViewById(R.id.skipLink);
         forgotPasswordText=findViewById(R.id.forgotPasswordLink);
         login.setOnClickListener(view -> loginUser());
         signupText.setOnClickListener(view -> {
             startActivity(new Intent(this, SignupActivity.class));
         });
         forgotPasswordText.setOnClickListener(v->showResetPasswordDialog());
+        skipText.setOnClickListener(v->{startActivity(new Intent(this, MainActivity.class));});
     }
     private void showResetPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
