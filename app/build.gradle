@@ -46,6 +46,7 @@ dependencies {
     implementation libs.lifecycle.livedata.ktx
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.firebase.auth
+    implementation libs.firebase.database
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -54,5 +55,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.2.0'
     implementation "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
     implementation "com.google.android.gms:play-services-maps:19.0.0"
+    implementation 'com.google.android.material:material:1.12.0'
 
 }

@@ -38,5 +38,10 @@
     <string name="profile">Profile</string>
     <string name="save">Save</string>
     <string name="logout">Logout</string>
+    <string name="room_name">Room Name</string>
+    <string name="firebase_realtime_db_url">https://personal-assistant-89c5a-default-rtdb.asia-southeast1.firebasedatabase.app/</string>
+    <string name="create_room">Create Room</string>
+    <string name="join_room">Join Room</string>
+    <string name="connect_internet">Connect to internet to join or create room</string>
 
 </resources>

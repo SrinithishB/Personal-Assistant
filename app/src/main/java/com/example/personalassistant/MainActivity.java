@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    CardView calculator, physical, todo, gps;
+    CardView calculator, physical, todo, gps,docs;
     private FirebaseAuth mAuth;
     GridLayout gridLayout;
     TextView nameText;
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         todo = findViewById(R.id.todoCard);
         nameText = findViewById(R.id.userNameText);
         profilePic = findViewById(R.id.profilePic);
+        docs=findViewById(R.id.documentsCard);
+
 
         if (user == null) {
             constraintLayout.setVisibility(View.GONE);
@@ -94,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(new Intent(this, LoginActivity.class));
 //            finish();
             startActivity(new Intent(this, ProfileActivity.class));
+        });
+        docs.setOnClickListener(v -> {
+            Intent intent = new Intent(this, DocsActivity.class);
+            startActivity(intent);
         });
     }
 }
