@@ -1,5 +1,6 @@
 package com.example.personalassistant;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +24,13 @@ public class JoinRoomBottomSheetActivity extends BottomSheetDialogFragment {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getContext(),JoinClassroom.class));
+                startActivity(new Intent(getContext(), JoinRoomActivity.class));
             }
         });
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getContext(),CreateClassroom.class));
+                startActivity(new Intent(getContext(),CreateRoomActivity.class));
             }
         });
         return view;
