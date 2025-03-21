@@ -43,5 +43,7 @@
     <string name="create_room">Create Room</string>
     <string name="join_room">Join Room</string>
     <string name="connect_internet">Connect to internet to join or create room</string>
+    <string name="ask_the_room_owner_for_the_room_code_to_join_the_class">Ask the room owner for the room code to join the class.</string>
+    <string name="room_code">Room code</string>
 
 </resources>

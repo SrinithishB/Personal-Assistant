@@ -31,10 +31,10 @@ public class RoomsRecyclerListAdapter extends RecyclerView.Adapter<RoomsRecycler
 
     @Override
     public void onBindViewHolder(@NonNull RoomsRecyclerListAdapter.ViewHolder holder, int position) {
-        RoomData classData=roomDataList.get(position);
-        holder.roomName.setText(classData.getRoom_name());
-        holder.createdAndNoOfMembers.setText(classData.getCreated_by());
-        switch (classData.getImageview_id()){
+        RoomData roomData=roomDataList.get(position);
+        holder.roomName.setText(roomData.getRoom_name());
+        holder.createdAndNoOfMembers.setText(roomData.getCreated_by());
+        switch (roomData.getImageview_id()){
             case 1:
                 holder.imageView.setBackgroundResource(R.drawable.vector1);
                 break;
@@ -55,15 +55,14 @@ public class RoomsRecyclerListAdapter extends RecyclerView.Adapter<RoomsRecycler
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                try {
-//                    Intent intent=new Intent(context,Class.class);
-//                    intent.putExtra("room_code",classData.getRoom_code());
-//                    intent.putExtra("room_id",classData.getRoom_id());
-//
-//                    context.startActivity(intent);
-//                }catch (Exception e){
-//                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
+                try {
+                    Intent intent=new Intent(context,RoomActivity.class);
+                    intent.putExtra("room_code",roomData.getRoom_code());
+                    intent.putExtra("room_id",roomData.getRoom_id());
+                    context.startActivity(intent);
+                }catch (Exception e){
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

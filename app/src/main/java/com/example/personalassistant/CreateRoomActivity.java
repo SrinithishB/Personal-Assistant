@@ -1,5 +1,6 @@
 package com.example.personalassistant;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,14 +14,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,11 +28,12 @@ import java.util.Random;
 
 public class CreateRoomActivity extends AppCompatActivity {
     EditText createRoomEditText;
-    ImageView close,create;
+    ImageView close, create;
+    ProgressDialog progressDialog;
     String RoomName;
     String roomCode;
     FirebaseDatabase database;
-    DatabaseReference myRef;
+    DatabaseReference myRef, userRoomRef;
     int imageId;
 
     @Override
@@ -45,74 +46,93 @@ public class CreateRoomActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        createRoomEditText=findViewById(R.id.RoomName);
-        close=findViewById(R.id.close);
-        create=findViewById(R.id.tick);
-        database = FirebaseDatabase.getInstance(String.valueOf(R.string.firebase_realtime_db_url));
-        myRef = database.getReference("rooms");
+        createRoomEditText = findViewById(R.id.RoomName);
+        close = findViewById(R.id.close);
+        create = findViewById(R.id.tick);
 
-        myRef.setValue("Hello, World!");
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RoomName=createRoomEditText.getText().toString();
-                if (RoomName.isEmpty()){
-                    createRoomEditText.setError("Room name is required");
-                }else{
-                    createClass();
-                }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Creating Room...");
+        progressDialog.setCancelable(false);
+
+        database = FirebaseDatabase.getInstance(getString(R.string.firebase_realtime_db_url));
+        myRef = database.getReference("rooms");
+        userRoomRef = database.getReference("user_rooms");
+
+        close.setOnClickListener(v -> finish());
+
+        create.setOnClickListener(v -> {
+            RoomName = createRoomEditText.getText().toString();
+            if (RoomName.isEmpty()) {
+                createRoomEditText.setError("Room name is required");
+            } else {
+                progressDialog.show();
+                createRoom();
             }
         });
     }
-    private void createClass() {
-//        FirebaseAuth firebaseAuth;
-//        firebaseAuth= FirebaseAuth.getInstance();
-//        FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
-//        Random random=new Random();
-//        imageId=random.nextInt(5);
-//        if (imageId<=0||imageId>5){
-//            imageId=1;
-//        }
-//        RoomName=createRoomEditText.getText().toString();
-//        roomCode=createRoomCode();
-//        Boolean check=checkRoomCode(roomCode);
-//        while (check==false){
-//            classCode=createClassCode();
-//            check=checkClassCode(classCode);
-//        }
-//        ClassData classData=new ClassData(ClassName,Section,Room,Subject,firebaseUser.getDisplayName(),firebaseUser.getEmail(),classCode, SimpleDateFormat.getDateInstance().format(new Date()),imageId,TeacherCode);
-//        firestore.collection("classroom").document("dDNnzpXf1wYDRKsYuby1").collection(classCode).document("class_data").set(classData).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                createTeacherList();
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
+    private void createRoom() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        Random random = new Random();
+        imageId = random.nextInt(5);
+        if (imageId <= 0 || imageId > 5) {
+            imageId = 1;
+        }
+        roomCode = createRoomCode();
+
+        checkRoomCode(roomCode, isUnique -> {
+            if (!isUnique) {
+                roomCode = createRoomCode();
+            }
+
+            String uniqueRoomId = myRef.push().getKey();
+            RoomData roomData = new RoomData(RoomName, firebaseUser.getDisplayName(),
+                    firebaseUser.getEmail(), firebaseUser.getUid(), roomCode,
+                    SimpleDateFormat.getDateInstance().format(new Date()), imageId);
+
+            if (uniqueRoomId != null) {
+                myRef.child(uniqueRoomId).setValue(roomData)
+                        .addOnSuccessListener(aVoid -> {
+                            userRoomRef.child(firebaseUser.getUid()).child(uniqueRoomId).setValue(roomData)
+                                    .addOnSuccessListener(aVoid2 -> {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(CreateRoomActivity.this, "Room Created Successfully", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(CreateRoomActivity.this, "Failed to Add Room to User", Toast.LENGTH_SHORT).show();
+                                    });
+                        })
+                        .addOnFailureListener(e -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(CreateRoomActivity.this, "Failed to Create Room", Toast.LENGTH_SHORT).show();
+                        });
+            }
+        });
     }
-//    private Boolean checkRoomCode(String classCode) {
-//        final Boolean[] s = new Boolean[1];
-//        s[0]=true;
-//        firestore=FirebaseFirestore.getInstance();
-//        firestore.collection("classroom").document("dDNnzpXf1wYDRKsYuby1").collection(classCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                if (!(queryDocumentSnapshots.isEmpty())){
-//                    s[0] =false;
-//                }
-//            }
-//        });
-//        return s[0];
-//    }
+
+    private void checkRoomCode(String roomCode, OnCheckCompleteListener listener) {
+        myRef.orderByChild("roomCode").equalTo(roomCode).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listener.onCheckComplete(snapshot.getChildrenCount() == 0);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.dismiss();
+                Toast.makeText(CreateRoomActivity.this, "Error checking room code", Toast.LENGTH_SHORT).show();
+                listener.onCheckComplete(false);
+            }
+        });
+    }
+
+    private interface OnCheckCompleteListener {
+        void onCheckComplete(boolean isUnique);
+    }
+
     private String createRoomCode() {
         String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();
@@ -121,7 +141,6 @@ public class CreateRoomActivity extends AppCompatActivity {
             int index = (int) (rnd.nextFloat() * CHARS.length());
             salt.append(CHARS.charAt(index));
         }
-        String code = salt.toString();
-        return code;
+        return salt.toString();
     }
 }
