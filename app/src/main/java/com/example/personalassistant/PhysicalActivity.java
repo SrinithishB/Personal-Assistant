@@ -26,11 +26,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -48,7 +51,8 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
     private float totalSteps = 0f;
     private float previousTotalSteps = 0f;
     private int stepGoal = 10000; // Default step goal
-    private TextView tvStepsTaken, tvCaloriesBurned, distanceText, activeTimeText, goalText;
+    private TextView tvStepsTaken, goalText;
+//    TextView tvCaloriesBurned, distanceText, activeTimeText;
     private Button changeGoalBtn;
     private ProgressBar progressBar;
     private static final float CALORIES_PER_STEP = 0.04f;
@@ -68,19 +72,21 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
         setContentView(R.layout.activity_physical);
 
         tvStepsTaken = findViewById(R.id.tv_stepsTaken);
-        tvCaloriesBurned = findViewById(R.id.caloriesText);
-        distanceText = findViewById(R.id.distanceText);
-        activeTimeText = findViewById(R.id.activeTimeText);
+//        tvCaloriesBurned = findViewById(R.id.caloriesText);
+//        distanceText = findViewById(R.id.distanceText);
+//        activeTimeText = findViewById(R.id.activeTimeText);
         changeGoalBtn = findViewById(R.id.changeGoalBtn);
         goalText = findViewById(R.id.goalText);
         progressBar = findViewById(R.id.progress_bar);
-        linearLayout = findViewById(R.id.linearLayout);
+//        linearLayout = findViewById(R.id.linearLayout);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
 
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_top_slide);
-        linearLayout.startAnimation(animation);
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+//        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_top_slide);
+//        linearLayout.startAnimation(animation);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         dbHandler = new StepCountDBHandler(this);
@@ -112,9 +118,10 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
 
         changeGoalBtn.setOnClickListener(view -> showGoalPicker());
     }
+    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     private void loadStepData() {
         List<StepCount> stepList = dbHandler.getAllSteps();
-        stepList.removeLast();
+//        stepList.removeLast();
         StepCountAdapter adapter = new StepCountAdapter(stepList.reversed());
         recyclerView.setAdapter(adapter);
     }
@@ -229,14 +236,14 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
             int progress = (int) (((float) totalSteps / stepGoal) * 100);
             progressBar.setProgress(progress);
 
-            // Calculate and update stats
-            float caloriesBurned = totalSteps * CALORIES_PER_STEP;
-            float distanceCovered = (totalSteps * STEP_LENGTH) / 1000; // km
-            float activeTimeMinutes = (totalSteps * STEP_TIME_SECONDS) / 60; // minutes
-
-            tvCaloriesBurned.setText(String.format("%.2f kcal", caloriesBurned));
-            distanceText.setText(String.format("%.2f km", distanceCovered));
-            activeTimeText.setText(String.format("%.1f min", activeTimeMinutes));
+//            // Calculate and update stats
+//            float caloriesBurned = totalSteps * CALORIES_PER_STEP;
+//            float distanceCovered = (totalSteps * STEP_LENGTH) / 1000; // km
+//            float activeTimeMinutes = (totalSteps * STEP_TIME_SECONDS) / 60; // minutes
+//
+//            tvCaloriesBurned.setText(String.format("%.2f kcal", caloriesBurned));
+//            distanceText.setText(String.format("%.2f km", distanceCovered));
+//            activeTimeText.setText(String.format("%.1f min", activeTimeMinutes));
 
             // Trigger notification if goal is reached
             if (progress >= 100) {
@@ -256,9 +263,9 @@ public class PhysicalActivity extends AppCompatActivity implements SensorEventLi
             String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
             dbHandler.insertOrUpdateStepCount(today, 0); // Reset in DB
             tvStepsTaken.setText("0");
-            tvCaloriesBurned.setText("0.00 kcal");
-            distanceText.setText("0.00 km");
-            activeTimeText.setText("0.0 min");
+//            tvCaloriesBurned.setText("0.00 kcal");
+//            distanceText.setText("0.00 km");
+//            activeTimeText.setText("0.0 min");
             progressBar.setProgress(0); // Reset progress bar
             return true;
         });

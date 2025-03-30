@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/gradient_background"
+    android:background="@color/backgroundColor"
     tools:context=".PhysicalActivity">
 
     <!-- Circular Step Counter -->
@@ -24,7 +24,6 @@
         android:id="@+id/progressLayout"
         android:layout_width="260dp"
         android:layout_height="260dp"
-        android:layout_marginBottom="50dp"
         >
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -36,18 +35,28 @@
             android:progressDrawable="@drawable/circle_progress_bar"
             android:textAlignment="center"/>
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/step_count"
-                android:textSize="20sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"/>
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/steps"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/step_count"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_stepsTaken"
@@ -73,118 +82,119 @@
                 android:text="0"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/changeGoalBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/orange_btn"
-                android:textColor="@color/white"
-                android:padding="12dp"
-                android:text="@string/change_goal"
-                android:elevation="4dp"
-                android:layout_marginTop="10dp"/>
         </LinearLayout>
-
     </RelativeLayout>
-
-<LinearLayout
-    android:id="@+id/linearLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
-
-    <!-- Info CardView -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/changeGoalBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp"
-        android:padding="16dp">
+        android:background="@drawable/orange_btn"
+        android:textColor="@color/white"
+        android:padding="12dp"
+        android:text="@string/change_goal"
+        android:layout_margin="50px"
+        android:elevation="4dp"/>
+<!--<LinearLayout-->
+<!--    android:id="@+id/linearLayout"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:background="@drawable/background">-->
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnCount="3"
-            android:padding="16dp"
-            android:background="@color/white"
-            android:rowCount="1">
+<!--    &lt;!&ndash; Info CardView &ndash;&gt;-->
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        app:cardCornerRadius="20dp"-->
+<!--        app:cardElevation="8dp"-->
+<!--        android:padding="16dp">-->
 
-            <!-- Calories -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+<!--        <GridLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:columnCount="3"-->
+<!--            android:padding="16dp"-->
+<!--            android:background="@color/white"-->
+<!--            android:rowCount="1">-->
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/fire_solid" />
+<!--            &lt;!&ndash; Calories &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:id="@+id/caloriesText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
+<!--                <ImageView-->
+<!--                    android:layout_width="32dp"-->
+<!--                    android:layout_height="32dp"-->
+<!--                    android:src="@drawable/fire_solid" />-->
 
-            <!-- Distance -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+<!--                <TextView-->
+<!--                    android:id="@+id/caloriesText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="0"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"/>-->
+<!--            </LinearLayout>-->
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/location_crosshairs_solid"/>
+<!--            &lt;!&ndash; Distance &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:id="@+id/distanceText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-            </LinearLayout>
+<!--                <ImageView-->
+<!--                    android:layout_width="32dp"-->
+<!--                    android:layout_height="32dp"-->
+<!--                    android:src="@drawable/location_crosshairs_solid"/>-->
 
-            <!-- Active Time -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+<!--                <TextView-->
+<!--                    android:id="@+id/distanceText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="0"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textStyle="bold"/>-->
+<!--            </LinearLayout>-->
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/clock_regular"/>
+<!--            &lt;!&ndash; Active Time &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:id="@+id/activeTimeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-        </GridLayout>
-    </androidx.cardview.widget.CardView>
+<!--                <ImageView-->
+<!--                    android:layout_width="32dp"-->
+<!--                    android:layout_height="32dp"-->
+<!--                    android:src="@drawable/clock_regular"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/activeTimeText"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="0"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textStyle="bold"/>-->
+<!--            </LinearLayout>-->
+<!--        </GridLayout>-->
+<!--    </androidx.cardview.widget.CardView>-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recyclerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
+<!--</LinearLayout>-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-</LinearLayout>
 </LinearLayout>

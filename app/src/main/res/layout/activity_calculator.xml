@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/gradient_background"
+    android:background="@color/backgroundColor"
     tools:context=".CalculatorActivity">
 <ScrollView
     android:layout_width="match_parent"
@@ -22,12 +22,20 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/custom_button"
+            android:background="@color/backgroundColor"
             android:textAlignment="viewEnd"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:layout_margin="5dp"
             android:padding="10dp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="15px"
+            android:background="@color/white" />
+
         <LinearLayout
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
@@ -43,7 +51,7 @@
                 android:layout_margin="5dp"
                 android:text="("
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
             <Button
                 android:id="@+id/btnCloseBracket"
                 style="?android:attr/buttonBarButtonStyle"
@@ -53,7 +61,7 @@
                 android:layout_margin="5dp"
                 android:text=")"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
             <Button
                 android:id="@+id/btnAC"
                 style="?android:attr/buttonBarButtonStyle"
@@ -63,7 +71,7 @@
                 android:layout_margin="5dp"
                 android:text="AC"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnBack"
@@ -74,7 +82,7 @@
                 android:text="⌫"
                 android:layout_margin="5dp"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
 
@@ -94,7 +102,7 @@
                 android:layout_margin="5dp"
                 android:text="1"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/n2"
@@ -105,7 +113,7 @@
                 android:layout_margin="5dp"
                 android:text="2"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/n3"
@@ -116,7 +124,7 @@
                 android:layout_margin="5dp"
                 android:text="3"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnMul"
@@ -127,7 +135,7 @@
                 android:layout_weight="1"
                 android:text="X"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <!-- Row 2 -->
@@ -146,7 +154,7 @@
                 android:layout_margin="5dp"
                 android:text="4"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/n5"
@@ -157,7 +165,7 @@
                 android:layout_margin="5dp"
                 android:text="5"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/n6"
@@ -168,7 +176,7 @@
                 android:layout_weight="1"
                 android:text="6"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnDiv"
@@ -179,7 +187,7 @@
                 android:layout_weight="1"
                 android:text="/"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <!-- Row 3 -->
@@ -198,7 +206,7 @@
                 android:layout_weight="1"
                 android:text="7"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/n8"
@@ -209,7 +217,7 @@
                 android:layout_margin="5dp"
                 android:text="8"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/n9"
@@ -220,7 +228,7 @@
                 android:layout_margin="5dp"
                 android:text="9"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnAdd"
@@ -231,7 +239,7 @@
                 android:text="+"
                 android:layout_margin="5dp"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <!-- Row 4 -->
@@ -252,7 +260,7 @@
                 android:layout_weight="1"
                 android:text="."
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/n0"
@@ -263,7 +271,7 @@
                 android:layout_weight="1"
                 android:text="0"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnSub"
@@ -274,7 +282,7 @@
                 android:layout_weight="1"
                 android:text="-"
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnEqual"
@@ -285,7 +293,7 @@
                 android:layout_weight="1"
                 android:text="="
                 android:background="@drawable/custom_button"
-                android:textColor="@color/black" />
+                android:textColor="@color/yellow" />
         </LinearLayout>
 
     </LinearLayout>
