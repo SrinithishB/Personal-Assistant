@@ -57,8 +57,9 @@ public class RoomsRecyclerListAdapter extends RecyclerView.Adapter<RoomsRecycler
             public void onClick(View v) {
                 try {
                     Intent intent=new Intent(context,RoomActivity.class);
-                    intent.putExtra("room_code",roomData.getRoom_code());
                     intent.putExtra("room_id",roomData.getRoom_id());
+
+                    intent.putExtra("room_code",roomData.getRoom_code());
                     context.startActivity(intent);
                 }catch (Exception e){
                     Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
