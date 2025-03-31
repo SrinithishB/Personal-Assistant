@@ -15,4 +15,10 @@
     <color name="lightGray">#E0E0E0</color>
 
 
+    <color name="sunny_background">#FFC107</color>
+    <color name="rainy_background">#37474F</color>
+    <color name="snowy_background">#B3E5FC</color>
+    <color name="foggy_background">#B0BEC5</color>
+
+
 </resources>
