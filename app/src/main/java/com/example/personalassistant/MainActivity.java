@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    CardView calculator, physical, todo, gps, docs, notes;
+    CardView calculator, physical, todo, gps, docs, notes,game;
     private FirebaseAuth mAuth;
     GridLayout gridLayout;
     TextView nameText;
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.profilePic);
         docs = findViewById(R.id.documentsCard);
         notes = findViewById(R.id.notesCard);
+        game=findViewById(R.id.gameCard);
 
         if (user == null) {
             constraintLayout.setVisibility(View.GONE);
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         applyBounceEffect(gps);
         applyBounceEffect(docs);
         applyBounceEffect(notes);
+        applyBounceEffect(game);
 
 //        calculator.setOnClickListener(v -> startActivity(new Intent(this, CalculatorActivity.class)));
 //        physical.setOnClickListener(v -> startActivity(new Intent(this, PhysicalActivity.class)));
@@ -108,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
                     intent = new Intent(this, DocsActivity.class);
                 } else if (v.getId() == R.id.notesCard) {
                     intent = new Intent(this, NotesActivity.class);
-                }
+                } else if (v.getId() == R.id.gameCard) {
+                intent = new Intent(this, GameActivity.class);
+            }
 
                 if (intent != null) {
                     startActivity(intent);

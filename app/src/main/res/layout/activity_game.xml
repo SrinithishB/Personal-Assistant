@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="#f0f0f0"
+    tools:context=".GameActivity">
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Player X's turn"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_marginBottom="20dp" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:orientation="horizontal"
+        android:divider="@android:color/darker_gray"
+        android:showDividers="middle"
+        android:layout_marginTop="20dp"
+        android:padding="2dp"> <!-- Add padding to space out the buttons more -->
+
+        <!-- 9 buttons for the board -->
+        <Button android:id="@+id/button0" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button1" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button2" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button3" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button4" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button5" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button6" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button7" style="@style/TicTacButton"/>
+        <Button android:id="@+id/button8" style="@style/TicTacButton"/>
+    </GridLayout>
+
+
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>

@@ -87,12 +87,18 @@
                         app:cardElevation="6dp"
                         android:clickable="true"
                         android:focusable="true">
-
-                        <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/new_calculator"/>
+                            <com.airbnb.lottie.LottieAnimationView
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                app:lottie_loop="true"
+                                app:lottie_autoPlay="true"
+                                android:layout_gravity="center"
+                                app:lottie_rawRes="@raw/calculator"/>
+<!--                        <ImageView-->
+<!--                            android:layout_width="80dp"-->
+<!--                            android:layout_height="80dp"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:src="@drawable/new_calculator"/>-->
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -121,12 +127,19 @@
                         app:cardElevation="6dp"
                         android:clickable="true"
                         android:focusable="true">
-
-                        <ImageView
+                        <com.airbnb.lottie.LottieAnimationView
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_step_count"/>
+                            app:lottie_rawRes="@raw/running"/>
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="80dp"-->
+<!--                            android:layout_height="80dp"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:src="@drawable/new_step_count"/>-->
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -156,11 +169,13 @@
                         android:clickable="true"
                         android:focusable="true">
 
-                        <ImageView
+                        <com.airbnb.lottie.LottieAnimationView
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_to_do"/>
+                            app:lottie_rawRes="@raw/todo"/>
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -189,12 +204,18 @@
                         app:cardElevation="6dp"
                         android:clickable="true"
                         android:focusable="true">
-
-                        <ImageView
+                        <com.airbnb.lottie.LottieAnimationView
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_notes"/>
+                            app:lottie_rawRes="@raw/notes"/>
+<!--                        <ImageView-->
+<!--                            android:layout_width="80dp"-->
+<!--                            android:layout_height="80dp"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:src="@drawable/new_notes"/>-->
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -225,11 +246,13 @@
                         android:clickable="true"
                         android:focusable="true">
 
-                        <ImageView
+                        <com.airbnb.lottie.LottieAnimationView
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_location"/>
+                            app:lottie_rawRes="@raw/weather"/>
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -260,11 +283,13 @@
                         android:clickable="true"
                         android:focusable="true">
 
-                        <ImageView
+                        <com.airbnb.lottie.LottieAnimationView
                             android:layout_width="80dp"
                             android:layout_height="80dp"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_document"/>
+                            app:lottie_rawRes="@raw/document"/>
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -272,6 +297,42 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:text="@string/docs"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:paddingTop="8dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/gameCard"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_margin="10dp"
+                        app:cardCornerRadius="100dp"
+                        app:cardBackgroundColor="@color/cardCircleColor"
+                        app:cardElevation="6dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            app:lottie_loop="true"
+                            app:lottie_autoPlay="true"
+                            android:layout_gravity="center"
+                            app:lottie_rawRes="@raw/game"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Games"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:paddingTop="8dp"/>
                 </LinearLayout>
